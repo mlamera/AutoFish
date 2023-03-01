@@ -5,17 +5,17 @@ import sys
 import numpy as np
 import datetime
 
+
+CAST_KEY = "-"
+CATCH_KEY = "="
+SOUND_THRESHOLD = 0.0008
+
 # default 30 mins
 MINUTES_TO_FISH = 30
-
 SET_SPEAKER_ID = None
-#lowest seen = 0.0008
-SOUND_THRESHOLD = 0.0008
 SEC = 1
 SAMPLE_RATE = 48000
 WAIT_PARAMETER = 2
-CAST_KEY = "-"
-CATCH_KEY = "="
 
 def getSound(i):
     speaker_id = sc.default_speaker().name if SET_SPEAKER_ID == None else SET_SPEAKER_ID
