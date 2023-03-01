@@ -3,6 +3,10 @@ import pyautogui
 import soundcard as sc
 import sys
 import numpy as np
+import datetime
+
+# default 30 mins
+MINUTES_TO_FISH = 30
 
 SET_SPEAKER_ID = None
 #lowest seen = 0.0008
@@ -43,33 +47,35 @@ def wait():
     wait_time = np.random.exponential(WAIT_PARAMETER)
     print(f"Waiting for {wait_time:.3f} seconds ... ")
     sleep(wait_time)
-    
 
 def fish(mins):
     """
     1. Set timer
     2. Check if WoW window selected
     3. Start fishing
-    4. If sound catch fish and cast again, else ignore (timer between caught and cast ~0.5 secs)
+    4. If sound catch fish and cast again, else ignore (timer for loot ~0.5 secs)
     5. Timer on casting If no sound by time recast press "-" (timer for -recast)
-
     """
-    #setup()
+
+
+
+
+    input("Prepare to select Wow window. Press Enter to start.")
     print("Select WoW window. Starting fishing in...")
     for i in range (1, 6):
         sleep(1)
         print(i)
     start_time = time()
     counter = 0
-    #seconds = min * 60
-    
-    time_remaining = True
-    while time_remaining:
-        time_left = time() - start_time
-        time_remaining = time_left < mins
+
+    is_time_remaining = True
+    while is_time_remaining:
+        calculate = int(time() - start_time)
+        time_left = str(datetime.timedelta(seconds=calculate))
+        is_time_remaining = (calculate / 60) < mins
         print("\n")
         print("-" * 10)
-        print(f"Fish iteration = {counter}, Time left = {time_left / 60:.3f}")
+        print(f"Fish iteration = {counter}, Time Elapsed = {time_left}, Minutes Selected = {mins}")
         pyautogui.press(CAST_KEY)
 
         for i in range(11):
@@ -85,5 +91,19 @@ def fish(mins):
     print(f"Finished fishing. {counter} fish caught!")
 
 
+def main():
+    while True:
+        try:
+            MINUTES_TO_FISH = int(input("Enter minutes to fish: "))
+            if (MINUTES_TO_FISH < 1) :
+                print("Number cannot be zero or negative.")
+                continue
+            else:
+                break
+        except ValueError:
+            print("Please enter integers only.")
+            continue
 
-fish(60)
+    fish(MINUTES_TO_FISH)
+
+main()
